@@ -11,16 +11,20 @@ struct ContentView: View {
     
     @State private var isShowingNewContact = false
     
+    @FetchRequest(fetchRequest: Contact.all()) private var contacts
+    
+    var provider = ContactsProvider.shared
+    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(0...10, id: \.self) { item in
+                ForEach(contacts) { contact in
                     ZStack(alignment: .leading) {
-                        NavigationLink(destination: ContactDetailView()) {
+                        NavigationLink(destination: ContactDetailView(contact: contact)) {
                             EmptyView()
                         }
                         .opacity(0)
-                        ContactRowView()
+                        ContactRowView(contact: contact)
                     }
                     
                     
@@ -39,7 +43,7 @@ struct ContentView: View {
             }
             .sheet(isPresented: $isShowingNewContact) {
                 NavigationStack {
-                    CreateContactView()
+                    CreateContactView(vm: .init(provider: provider))
                 }
             }
             .navigationTitle("Contacts")

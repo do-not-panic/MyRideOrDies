@@ -9,24 +9,25 @@ import SwiftUI
 
 struct CreateContactView: View {
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject var vm: EditContactViewModel
     
     var body: some View {
         List {
             
             Section("General") {
-                TextField("Name", text: .constant(""))
+                TextField("Name", text: $vm.contact.name)
                     .keyboardType(.namePhonePad)
-                TextField("Email", text: .constant(""))
+                TextField("Email", text: $vm.contact.email)
                     .keyboardType(.emailAddress)
-                TextField("Phone Number", text: .constant(""))
+                TextField("Phone Number", text:  $vm.contact.phoneNumber)
                     .keyboardType(.phonePad)
-                DatePicker("Birthday", selection: .constant(.now), displayedComponents: [.date])
-                Toggle("Favourite", isOn: .constant(true))
+                DatePicker("Birthday", selection:  $vm.contact.dob, displayedComponents: [.date])
+                Toggle("Favourite", isOn:  $vm.contact.isFavourite)
                 
             }
             
             Section("Notes") {
-                TextField("", text: .constant("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus iaculis risus id fermentum. Nulla aliquam sit amet urna eu consectetur. Aenean leo augue, semper sit amet blandit et, cursus ac sapien. Donec hendrerit bibendum purus, eu condimentum dui luctus in. Quisque facilisis lacus nisi, a luctus dui sodales et. Nullam ut posuere urna. Nam molestie gravida lectus."), axis: .vertical)
+                TextField("", text:  $vm.contact.notes, axis: .vertical)
             }
         }
         .navigationTitle("Name Here")
@@ -34,7 +35,13 @@ struct CreateContactView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done"){
-                    dismiss()
+                    do {
+                        try vm.save()
+                        dismiss()
+                    } catch {
+                        print(error)
+                    }
+                    
                 }
             }
             ToolbarItem(placement: .topBarLeading) {
@@ -49,6 +56,6 @@ struct CreateContactView: View {
 
 #Preview {
     NavigationStack {
-        CreateContactView()
+        CreateContactView(vm: .init(provider: .shared))
     }
 }
