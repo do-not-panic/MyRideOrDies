@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var isShowingNewContact = false
-    
     @FetchRequest(fetchRequest: Contact.all()) private var contacts
+
+    @State private var contactToEdit: Contact?
     
     var provider = ContactsProvider.shared
     
@@ -31,11 +31,11 @@ struct ContentView: View {
                                     EmptyView()
                                 }
                                 .opacity(0)
-                                ContactRowView(contact: contact)
+                                ContactRowView(provider: provider, contact: contact)
                                     .swipeActions(allowsFullSwipe: true) {
                                         Button(role: .destructive) {
                                             do {
-                                                try delete(contact)
+                                                try provider.delete(contact, in: provider.viewContext)
                                             } catch {
                                                 print(error)
                                             }
@@ -45,7 +45,7 @@ struct ContentView: View {
                                         .tint(.red)
                                         
                                         Button {
-                                            
+                                            contactToEdit = contact
                                         } label: {
                                             Label("Edit", systemImage: "pencil")
                                         }
@@ -61,37 +61,26 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
-                        isShowingNewContact.toggle()
+                        contactToEdit = .empty(context: provider.newContext)
                     } label: {
                         Image(systemName: "plus")
                             .font(.title3)
                     }
                 }
             }
-            .sheet(isPresented: $isShowingNewContact) {
+            .sheet(item: $contactToEdit, onDismiss: {
+                contactToEdit = nil
+            }, content: { contact in
                 NavigationStack {
-                    CreateContactView(vm: .init(provider: provider))
+                    CreateContactView(vm: .init(provider: provider, contact: contact))
                 }
-            }
+            })
             .navigationTitle("Contacts")
         }
         
     }
 }
 
-private extension ContentView {
-    
-    func delete(_ contact: Contact) throws {
-        let context = provider.viewContext
-        let exisitingContact = try context.existingObject(with: contact.objectID)
-        context.delete(exisitingContact)
-        Task(priority: .background) {
-            try await context.perform {
-                try context.save()
-            }
-        }
-    }
-}
 
 #Preview("Contacts with Data") {
     let preview = ContactsProvider.shared
