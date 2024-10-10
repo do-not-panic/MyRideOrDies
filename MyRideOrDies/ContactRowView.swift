@@ -11,8 +11,9 @@ import SwiftUI
 struct ContactRowView: View {
     
     @Environment(\.managedObjectContext) private var moc
-    let provider: ContactsProvider
     @ObservedObject var contact: Contact
+    let provider: ContactsProvider
+    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -54,5 +55,5 @@ private extension ContactRowView {
 
 #Preview {
     let previewProvider = ContactsProvider.shared
-    ContactRowView(provider: previewProvider, contact: .preview())
+    ContactRowView(contact: .preview(), provider: previewProvider)
 }

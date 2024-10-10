@@ -31,11 +31,11 @@ struct ContentView: View {
                                     EmptyView()
                                 }
                                 .opacity(0)
-                                ContactRowView(provider: provider, contact: contact)
+                                ContactRowView(contact: contact, provider: provider)
                                     .swipeActions(allowsFullSwipe: true) {
                                         Button(role: .destructive) {
                                             do {
-                                                try provider.delete(contact, in: provider.viewContext)
+                                                try provider.delete(contact, in: provider.newContext)
                                             } catch {
                                                 print(error)
                                             }

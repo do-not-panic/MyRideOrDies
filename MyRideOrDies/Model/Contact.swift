@@ -16,8 +16,15 @@ final class Contact: NSManagedObject, Identifiable {
     @NSManaged var email: String
     @NSManaged var isFavourite: Bool
    
+    var isValid: Bool {
+        !name.isEmpty &&
+        !phoneNumber.isEmpty &&
+        !email.isEmpty
+    }
+    
     var isBirthday: Bool {
-        Calendar.current.isDateInToday(dob)
+        dob.isSameDayAndMonth(as: Date.now)
+        //Calendar.current.isDateInToday(dob)
     }
     
     var formattedName: String {
@@ -75,4 +82,14 @@ extension Contact {
         return Contact(context: context)
     }
     
+}
+extension Date {
+    func isSameDayAndMonth(as date: Date) -> Bool {
+        let cal = Calendar.current
+        let compare = cal.dateComponents([.year, .month, .day], from: self, to: date)
+        //returns how many years, months and days between self and the given date
+        //year will be different, of course,
+        //but we want no difference between month and day
+        return compare.month == 0 && compare.day == 0
+    }
 }

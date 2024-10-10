@@ -11,6 +11,8 @@ struct CreateContactView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var vm: EditContactViewModel
     
+    @State private var hasError: Bool = false
+    
     var body: some View {
         List {
             
@@ -35,13 +37,7 @@ struct CreateContactView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done"){
-                    do {
-                        try vm.save()
-                        dismiss()
-                    } catch {
-                        print(error)
-                    }
-                    
+                    validate()
                 }
             }
             ToolbarItem(placement: .topBarLeading) {
@@ -50,6 +46,27 @@ struct CreateContactView: View {
                 }
             }
             
+        }
+        .alert("Something aint right",
+               isPresented: $hasError,
+               actions: {}) {
+            Text("It looks like your form is invalid")
+        }
+    }
+}
+
+private extension CreateContactView {
+    
+    func validate() {
+        if vm.contact.isValid {
+            do {
+                try vm.save()
+                dismiss()
+            } catch {
+                print(error)
+            }
+        } else {
+            hasError = true
         }
     }
 }
