@@ -53,6 +53,22 @@ extension Contact {
         ]
         return request
     }
+    
+    static func filter(with config: SearchConfig) -> NSPredicate {
+        switch config.filter {
+        case .all:
+            config.query.isEmpty ? NSPredicate(value: true) : NSPredicate(format: "name CONTAINS[cd] %@", config.query)
+        case .fave:
+            config.query.isEmpty ?
+            NSPredicate(format: "isFavourite == %@", NSNumber(value: true)) :
+            NSPredicate(format: "name CONTAINS[cd] %@ AND isFavourite == %@", config.query, NSNumber(value: true))
+        }
+    }
+    
+    static func sort(order: Sort) -> [NSSortDescriptor] {
+        
+        [NSSortDescriptor(keyPath: \Contact.name,  ascending: order == .asc)]
+    }
 }
 
 extension Contact {
