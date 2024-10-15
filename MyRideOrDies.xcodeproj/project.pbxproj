@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		2D15B0C82CA432600001E2B0 /* MyRideOrDies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRideOrDies.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DA9FB522CBE5FC100057346 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/XROS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +34,7 @@
 			isa = PBXGroup;
 			children = (
 				2D15B0CA2CA432600001E2B0 /* MyRideOrDies */,
+				2DA9FB512CBE5FC000057346 /* Frameworks */,
 				2D15B0C92CA432600001E2B0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +45,14 @@
 				2D15B0C82CA432600001E2B0 /* MyRideOrDies.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		2DA9FB512CBE5FC000057346 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2DA9FB522CBE5FC100057346 /* XCTest.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,10 +280,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonchess.MyRideOrDies;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
@@ -309,10 +320,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonchess.MyRideOrDies;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
